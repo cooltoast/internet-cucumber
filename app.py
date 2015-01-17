@@ -8,34 +8,34 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
-@app.route('/cucumber', methods=['GET', 'POST'])
+@app.route('/cucumber')
 def cucumber():
-    freq = request.args['f']
-    if (freq == 'yo'):
-        return yo()
-    elif (freq == 'venmo'):
-        return venmo()
-    return freq
+    return 'welcome to internet cucumber'
 
+@app.route('/cucumber/yo')
 def yo():
     yo_all_request = requests.post("http://api.justyo.co/yoall/", data={'api_token': config.YO_API_TOKEN})
     if 'result' in yo_all_request.json() and yo_all_request.json()['result'] == 'OK':
         return json.dumps({'text': 'Yo sent to all!'})
     else:
         return json.dumps({'text': 'Error sending Yo. API may be down...'})
-
-    return str(keys['yo_access_token'])
       
+@app.route('/cucumber/venmo')
 def venmo():
     pay = {}
     pay['access_token'] = config.VENMO_API_TOKEN
     pay['email'] = config.venmo_email
-    pay['note'] = 'test'
-    pay['amount'] = 0.02
+    pay['note'] = 'sent from cucumber'
+    pay['amount'] = request.args['amount']
     url = 'https://api.venmo.com/v1/payments'
     resp = requests.post(url, pay)
 
-    return str(resp.json())
+    if 'error' in resp.json():
+      return str(resp.json()['error']['message'])
+    elif 'data' in resp.json():
+      return str(resp.json()['data']['payment']['status'])
+    else:
+      return 'wat'
 
 
 if __name__ == '__main__':
