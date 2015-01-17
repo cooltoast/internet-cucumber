@@ -19,7 +19,7 @@ def yo():
         return json.dumps({'text': 'Yo sent to all!'})
     else:
         return json.dumps({'text': 'Error sending Yo. API may be down...'})
-      
+
 @app.route('/cucumber/venmo')
 def venmo():
     pay = {}
@@ -39,4 +39,5 @@ def venmo():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    #app.run(host='0.0.0.0', port=7000, debug=True)
+    app.run(port=7000)

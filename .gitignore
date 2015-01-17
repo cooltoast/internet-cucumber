@@ -1,4 +1,5 @@
 config.py
+cucumber.wsgi
 # Created by https://www.gitignore.io
 
 ### Python ###
