@@ -22,20 +22,25 @@ def yo():
 
 @app.route('/cucumber/venmo')
 def venmo():
-    pay = {}
-    pay['access_token'] = config.VENMO_API_TOKEN
-    pay['email'] = config.venmo_email
-    pay['note'] = 'sent from cucumber'
-    pay['amount'] = request.args['amount']
-    url = 'https://api.venmo.com/v1/payments'
-    resp = requests.post(url, pay)
+    cucumber_token = request.args['token']
+    if (cucumber_token == config.cucumber_token):
+      pay = {}
+      pay['access_token'] = config.VENMO_API_TOKEN
+      pay['email'] = config.venmo_email
+      pay['note'] = 'sent from cucumber'
+      pay['amount'] = request.args['amount']
+      url = 'https://api.venmo.com/v1/payments'
+      resp = requests.post(url, pay)
 
-    if 'error' in resp.json():
-      return str(resp.json()['error']['message'])
-    elif 'data' in resp.json():
-      return str(resp.json()['data']['payment']['status'])
+      if 'error' in resp.json():
+        return str(resp.json()['error']['message'])
+      elif 'data' in resp.json():
+        return str(resp.json()['data']['payment']['status'])
+      else:
+        return 'wat'
+
     else:
-      return 'wat'
+      return 'invalid cucumber token'
 
 
 if __name__ == '__main__':
