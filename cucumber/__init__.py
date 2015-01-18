@@ -22,13 +22,17 @@ def yo():
 
 @app.route('/cucumber/venmo')
 def venmo():
-    cucumber_token = request.args['token']
+    args = request.args
+    cucumber_token = args['token']
     if (cucumber_token == config.cucumber_token):
       pay = {}
       pay['access_token'] = config.VENMO_API_TOKEN
-      pay['email'] = config.venmo_email
+      if args['to'] == 'teddy':
+        pay['email'] = config.teddy_email
+      else:
+        pay['email'] = config.nathan_email
       pay['note'] = 'sent from cucumber'
-      pay['amount'] = request.args['amount']
+      pay['amount'] = args['amount'] if args['amount'] > 1 else 0.01
       url = 'https://api.venmo.com/v1/payments'
       resp = requests.post(url, pay)
 
