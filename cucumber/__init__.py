@@ -29,10 +29,14 @@ def venmo():
       pay['access_token'] = config.VENMO_API_TOKEN
       if args['to'] == 'teddy':
         pay['email'] = config.teddy_email
-      else:
+      elif args['to'] == 'nathan':
         pay['email'] = config.nathan_email
+      elif args['to'] == 'ryan':
+        pay['email'] = config.ryan_email
+      else: # get money
+        pay['email'] = config.markan_email
       pay['note'] = 'sent from cucumber'
-      pay['amount'] = args['amount'] if args['amount'] > 1 else 0.01
+      pay['amount'] = args['amount'] if args['amount'] > 1 else 0.01 # not tryna go broke
       url = 'https://api.venmo.com/v1/payments'
       resp = requests.post(url, pay)
 
